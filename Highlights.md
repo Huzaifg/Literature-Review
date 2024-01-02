@@ -1,0 +1,272 @@
+### All old literature review is here
+![[highlights.pdf]]
+
+
+#### Paper Number 
+#### Title 
+#### One-liner summary
+#### Summary
+
+#### Paper Number 65
+#### Meta Reinforcement Learning with Latent Variable Gaussian Processes #RL/ModelBased #ProbabilisticDynamicModels 
+[Annotated PDF from Semantic Scholar](https://www.semanticscholar.org/reader/6d561e0d7187e308916cde746aae9b4aa6658d17)
+
+#### One-liner summary
+*"Hence, we systematically combine three orthogonal ideas (probabilistic models, MPC, meta learning) for increased data efficiency in settings where we need to solve different, but related task
+
+#### Summary
+1) #Citable Model based RL challenges
+	1) *"A challenge with these learned models is the problem of model errors: If we learn a policy based on an incorrect model, the policy is unlikely to succeed on the real task. To mitigate the issue of these model errors it is recommended to use probabilistic models and to take model uncertainty explicitly into account during planning"*
+2) #Citable Why probabilistic models help
+	1) *"probabilistic models of f are essential for data-efficient learning as they mitigate the  effect of model errors."*
+3) #Method
+	1) *"Conditioning the GP on the latent variable enables it to disentangle global and task specific variation  in the dynamics. Generalization to new dynamics is  done by inferring the latent variable of that system"* - The GP here is the dynamics model
+	2) **I dont understand very well how they train, might beed a revisit**
+4) #Method - Summary of entire method
+	1) *"The key idea behind our approach is to address the meta learning problem probabilistically  using a latent variable model. We use online variational  inference to obtain a posterior distribution over the latent  variable, which describes the relatedness of tasks. This  posterior is then used for long-term predictions of the  state evolution and controller learning within a modelbased RL setting."*
+5) #Results 
+	1) *"We demonstrated that our ML-GP approach is as efficient or better than a non-meta learning baseline when solving multiple tasks at once. The ML-GP further generalizes well to learning models and controllers for unseen tasks giving rise to substantial improvements in data-efficiency on novel tasks"*
+
+
+#### Paper Number 64
+#### LEARNING TO ADAPT IN DYNAMIC, REAL-WORLD  ENVIRONMENTS THROUGH META-REINFORCEMENT LEARNING #RL/ModelBased #Meta-Learning
+[Annoted PDF in Semantic Scholar](https://www.semanticscholar.org/reader/944bd3b472c8a30163bbfc1b5cbab8545693c3e0)
+
+
+#### One-liner summary
+*"Our approach uses meta-learning to train a dynamics model prior such that, when combined with  
+recent data, this prior can be rapidly adapted to the local context"*
+Primary goal is to achieve online adaptation in dynamic environments.
+Dynamics model is  Neural Network with gaussian noise. For algorithm see page 6.
+The planner used is MPPI in sim and MPC with random shooting in reality.
+
+#### Summary
+1) #Citable 
+	1) *"Learning to adapt a model alleviates a central challenge of model-based reinforcement learning: the  problem of acquiring a global model that is accurate throughout the entire state space. Furthermore,  even if it were practical to train a globally accurate dynamics model, the dynamics inherently change  as a function of uncontrollable and often unobservable environmental factors."*
+
+2) Alot of good #Citable for meta-learning on Page 3 and 4
+3) Also #Citable is another result that Model-based approaches are sometimes not very good in asymptotic performance.
+4) The dynamics is $NN(\theta')$ where $\theta'$ is obtained from the update rule (meta-learning stuff) $\theta' = u_{\psi}(\tau, \theta)$ where $\tau$ is the data set of M time steps. Loss is the negative LL of the data under the dynamics model
+	1) M points are used to adapt $\theta$ to $\theta'$. And the $\theta'$ is evaluated on the future K points
+5) #Results 
+	1) Having model adaptation improves errors compared to TRPO using domain randomization (Sec 6.1)
+	2) Requires 1000 times less data than model-free (Sec 6.2)
+	3) Their methods that are trained for adaptation perform better and adapt faster than models that were just trained and made to adapt at test time and also a model that was trained for a high number of time steps on the test environment itself (Sec 6.3).
+	4) On the real robot, their method out performs Model Based methods and Model Based methods with Dynamic evaluation. *"1)adapt online to a missing leg, 2) adjust to novel terrains and slopes, 3) account  for miscalibration or errors in pose estimation, and 4) compensate for pulling payloads"* 
+
+#### Paper Number 63
+#### Deep Reinforcement Learning in a Handful of Trials  using Probabilistic Dynamics Models #RL/ModelBased #ProbabilisticDynamicModels 
+#### One-liner summary
+*"We propose a new algorithm called probabilistic ensembles with trajectory sampling (PETS) that combines* uncertainty-aware deep network dynamics models with sampling-based uncertainty 
+*propagation*"
+They use an **ensemble of bootstrapped probabilistic neural networks as their dynamics models.**
+#### Summary
+1) #Citable - MBRL vs Model Free
+	 "*However, the asymptotic performance of MBRL methods  on common benchmark tasks generally lags behind model-free methods. That is, although MBRL  methods tend to learn more quickly, they also tend to converge to less optimal solutions.* "
+ 2) #Citable - Gaussian process drawbacks for dynamics modelling
+	 *"while efficient models such as Gaussian processes can learn extremely quickly,  they struggle to represent very complex and discontinuous dynamical systems.By contrast, neural network (NN) models can scale to large datasets with high-dimensional inputs, and can represent such systems more effectively. However, NNs struggle with the opposite problem: to learn fast means to learn with few data and NNs tend to overfit on small datasets, making poor predictions far into the future.*"
+ 3) #Citable - Why uncertainty in Dynamics is good
+	 *"Our second observation is that this issue can, to a large extent, be mitigated by properly incorporating uncertainty into the dynamics model"*
+ 4) Method once the dynamics is learnt
+    "*Once a dynamics model ̃f is learned, we use ̃f to predict the distribution over state-trajectories*  
+	*resulting from applying a sequence of actions. By computing the expected reward over state-*  
+	*trajectories, we can evaluate multiple candidate action sequences, and select the optimal action*  
+	*sequence to us*"
+5) #Citable - Model choice in MBRL is crucial
+	*"Any MBRL algorithm must select a class of model to predict the dynamics. This choice is often crucial  for an MBRL algorithm, as even small bias can significantly influence the quality of the corresponding  controller*"
+6) #Citable - Importance of distinguishing types of uncertainty
+	*"Without a  way to distinguish epistemic uncertainty from aleatoric, an exploration algorithm (e.g. Bayesian  optimization) might mistakingly choose actions with high predicted reward-variance ‘hoping  to learn something’ when in fact such variance is caused by persistent and irreducible system  stochasticity offering zero exploration value."*
+	
+7) #Results - Probabilistic Ensemble models win
+	"*the probabilistic ensembles (PE-XX) perform best in*  
+	*all tasks, except cartpole (‘X’ symbolizes any character). Close seconds are the single-probability type models: probabilistic network (P-XX) and ensembles of deterministic networks (E-XX). Worst* is the deterministic network (D-E).*"
+	"Our results indicate that the gap in asymptotic performance between model-based and model-free  reinforcement learning can, at least in part, be bridged by incorporating uncertainty estimation into  the model learning process"
+ 
+ 
+ 
+#### Paper Number 62
+[Annoted PDF in Semantic Scholar](https://www.semanticscholar.org/reader/1df5d8dbc02ff5d8489a2c1d4514eeef56188b39)
+
+#### PIPPS: Flexible Model-Based Policy Search  Robust to the Curse of Chaos #RL/ModelBased #ProbabilisticDynamicModels
+
+#### One-liner summary
+Provides an improvement on PILCO by using a better and more stable gradient estimate of the model. The algorithm is called **PIPPS**
+
+#### Summary
+1) They say that the problem of exploding gradients may be caused by the fundamental chaos-like nature of long chains of nonlinear computations with the magnitude becoming large and the direction becoming essentially random - ***"Thus, this work searches for an alternative flexible***  
+***method for evaluating trajectory distributions and gradients"***
+2) They show however that likelihood gradients don't suffer much from this problem than the reparametrization gradients do (this is related to differentiating through stochasticties)
+3) They introduce a total propagation algorithm for getting a gradient from a population
+4) The large variance in the gradients when using particles with reparameterization is due to the chaos-like sensitive dependence on the initial conditions - a common property in long chains of nonlinear mappings
+5) Section 5.2: The Curse of Chaos in Deep Learning is a really good paragraph to understand the exploding gradients issue
+
+#### Paper Number 61
+[Link to Semantic Scholar](https://www.semanticscholar.org/reader/ab68bd6f47bfa8744f0f39be8c163d28203eefa2)
+
+#### Bayesian Optimization with Automatic Prior Selection  for Data-Efficient Direct Policy Search #RL/ModelBased 
+#### One-liner summary
+Bayesian optimization is again used to model the Long term reward function. The contribution is a new acquisition function to choose the next best point called **Most Likely Expected Improvement (MLEI)**
+
+
+#### Paper Number 60
+[Annoted PDF in Semantic Scholar](https://www.semanticscholar.org/reader/1460b2073fc915c496021cc40613a87d9b46fa51) 
+
+
+#### Virtual vs. Real: Trading Off Simulations and Physical Experiments  in Reinforcement Learning with Bayesian Optimization #RL/ModelBased #MutltiFidelity
+
+#### One-liner summary
+This paper could be very useful for the multifidelity set up for training that we want to do in RL.
+#### Summary
+1) Learns cost function J using a GP
+2) At each step of training, they choose new $\theta$ (control policy parameters) to try and whether to try it in sim or real using ***entropy*** as measurement
+3) To choose the new $\theta$, ***Entropy search*** is used to reduce the uncertainty of the local of minimum $J(\theta)$. Paper provides good explanation of this in **Page 3**
+4) $\theta$ is optimized for using Bayesian Optimization
+5) The main contribution is that they modify the kernel function of the GP to take multiple information sources - **Page 3 ending**
+6) *"Evaluations in simulation (blue  dots) reduce the uncertainty of this blue shaded region, but  reduce only partially the uncertainty about the true cost  (red). In contrast, an evaluation on the real system (red dot)  allows one to learn the true cost J directly, thus reducing  the total uncertainty (red), while some uncertainty about the  variance of Jsim remains (blue). Having uncertainty about  the simulation is by itself irrelevant for the proposed method,  because we solely aim to minimize the performance on the  
+physical system."*
+
+
+#### Paper Number 59
+![[2017ChebatorModelBasedAndModelFreeRL.pdf]]
+#### Combining Model-Based and Model-Free Updates for Trajectory-Centric Reinforcement Learning #RL/Hybrid
+
+#### One-liner summary:
+Combines model based and model free RL but for very simple system using assumptions like linearization - [Link to Semantic Scholar](https://www.semanticscholar.org/reader/a2e2770565665a5d7ba4570934aa1a7882a4e214)
+
+
+#### Paper Number 58
+![[2020KonstantinosRLHandFullTrialsSurvey.pdf]]
+#### A Survey on Policy Search Algorithms for Learning Robot Controllers in a Handful of Trials #survey #RL/ModelBased
+#### Summary and Quotes
+1) This article surveys the literature along these three axes: priors on policy structure and parameters (see Section III), models of expected return (see Section IV), and models of dynamics (see Section V).
+2) Gives time taken for training model-free RL techniques
+3) model-based PS algorithms scale well with the dimensionality of the policy, but they do not scale with the dimensionality of the state space; and direct PS algorithms scale well with the dimensionality of the state space, but not with the dimensionality of the policy
+4) ![[Pasted image 20231229160735.png]]
+
+5) Last section a bit confusing - did not take much from it
+#### Paper Number 57
+#### Paper
+![[2023UtkarshGPUODEandSDEs.pdf]]
+#### Title
+**Automated Translation and Accelerated Solving of Differential Equations on Multiple GPU Platforms**
+#### Authors and affiliation
+MIT CSAIl - Julia folks
+#### Citations
+N.A
+#### Keywords
+GPU ODE/SDE solvers
+#### One-liner summary
+ODE and SDE system solver that produces GPU kernels for all kinds of GPUs (Nvidia, AMD, Intel and Apple) and these GPU kernels are also AD compatible.
+#### Summary
+
+#### Paper Number 52
+![[2023DevosLSBicycleID.pdf]]
+
+
+#### A least-squares identification method for vehicle cornering stiffness identification from common vehicle sensor data. 
+#### Authors and affiliation
+T. Devosa,b and F. Naetsa, b
+ E2E Lab, Flanders Make@KU Leuven; bDepartment of Mechanical Engineering, KU
+Leuven, Belgium
+#### Citations
+Not published
+#### Keywords
+Parameter identification/system identification
+#### One-liner summary
+Identify the linear tire lateral stiffness from a real vehicle dataset using least squares
+#### Summary
+1) They use available lateral acceleration and yaw rate measurements (converted to yaw acceleration using finite differences) from 2 real vehicles in order to identify the linear tire lateral stiffness for the front and the rear. They remove all the noise in the data using low pass filters
+2) The input to the vehicle is the longitudinal velocity which they directly get from the data. In the data this seems to be derived from the wheel speed measurements. The other input is the steering angle which is measure using a steering-mounted encoder.
+3) They also don't identify the measurable parameters such as the Inertia's/ mass and directly take these also from the data
+4) They have two least square loss functions (one for each sensor) and they weigh them to make one loss function which they optimize. Interestingly enough they find that the yaw rate weight must be about 1000 times more than the lateral velocity weight. 
+5) They do not test their calibrated model on unseen maneuvers.
+
+
+#### Paper Number 53
+#### Paper![[2022LeguizamoRLMultiFidelity.pdf]]
+
+#### Title
+Deep Reinforcement Learning for Robotic Control with Multi-Fidelity Models
+#### Authors and affiliation
+David Felipe Leguiza - Iowa
+#### Citations
+#### Keywords
+Multi-fidelity Reinforcement Learning
+#### One-liner summary
+In this paper, the authors train a DRL policy for a 7 DOF Sawyer robotic arm using a low-fidelity simulation model based on the Denavit-Hartenberg parameters and further fine tune the policy on a high-fidelity Gazebo simulation model. The find that the multi-fidelity transfer learning approach is more efficient on most cases and can be directly transferred onto the real robot without degradation of performance. 
+#### Summary
+
+
+#### Paper Number 54
+![[2023DjeumouNeuralSDE.pdf]]
+#### Title 
+How to Learn and Generalize From Three Minutes of Data: Physics-Constrained and Uncertainty-Aware Neural Stochastic Differential Equations
+#### Authors and affiliation
+Franck Djeumou - UT Austin
+#### Citations 
+N.A
+#### Keywords
+Data driven dynamics
+#### One-liner summary
+Using Neural Stochastic Differential Equation's to model the dynamics of a hexacopter and then use it with MPC to get amazing performance
+#### Summary
+1) They don't try to do the impossible and learn the complete dynamics of the hexacopter with a NN. **Instead they provide "physics priors"**
+
+From the paper:
+
+_"The physics-constrained model leverages the structure of 6-dof rigid body dynamics_  
+_while parametrizing the aerodynamics forces and moments, the motor command to thrust function,_  
+_and (geometric) parameters of the system such as the mass and the inertia matrix"_
+
+Here "parametrizing" means using a NN.
+
+This is what I have been saying we should take as the first step of "learning a model of a vehicle". Learn the maps (which they call "motor comamnd to thrust function") and other forces that are difficult to evaluate on the RHS (In our case these are tire forces or friction forces) rather than learning the entire model. 
+
+2) Since they use stochastic differential equations, the learn the "diffusion term" which **encodes model uncertainty.** This diffusion term is forced to say _"if the current state is close to a state I have seen in training, the uncertainty in predicting the next state is minimum; if the current state is far away from a state seen in training ("far away" is defined using the Eucledian distance between the states in this paper), then increase model uncertainty proportional to the distance"._ 
+
+3) Most importantly, they use their model in a **real world system**. They also recognize that a dynamic model by itself is useless - they thus use it how people in robotics would use it, as a model in MPC or as the environment simulator in Reinforcement learning.  They then show that its performance is great for these applications. 
+
+_**Why do we want to encode model uncertainty in this situation?**_
+
+1) They claim that this helps reinforcement learning algorithms. 
+
+2) Since NN are used, we all know that they are much more accurate near the training data. It thus makes a lot of sense to encode uncertainty in way that it increases far away from the training data.  The way they encode this uncertainty is by using Stochastic Differential Equations - which I think is very neat, simple and extensiable.
+
+#### Paper Number 55
+#### Paper
+![[2018NagabandiModelBasedAndModelFreeRL.pdf]]
+#### Title 
+Neural Network Dynamics for Model-Based Deep Reinforcement Learning with Model-Free Fine-Tuning
+#### Authors and affiliation
+Anusha Nagabandi - UC Berkley
+#### Citations
+1015 - Seems like a breakthrough paper
+#### Keywords
+Model Based RL
+#### One-liner summary
+They learn an policy using imitation learning from an MPC controller/ NN dynamics set up and use it as a starting point for model free RL.
+#### Summary
+1) Model based RL seems like the simple concept of learning a parameterized dynamic model and then using that to do control and then reusing that data generated and training the NN again - **A nice flowchart is shown in Page 4**
+2) So they do this with an MPC controller and get a good model based controller. They then use all this data to do imitation learning and learn a conditionally Gaussian policy. 
+3) They then use this learned policy as the starting point for RL
+
+
+
+#### Paper Number 56
+#### Paper
+![[2020WangRLBenchmark.pdf]]
+#### Title 
+**Bench-marking Model-Based Reinforcement Learning**
+#### Authors and affiliation
+Tingwu Wang - UC Berkley
+#### Citations
+300 odd even though its not published
+#### Keywords
+Benchmarking model based RL
+#### One-liner summary
+Benchmarks 11 MBRL and 4 MFRL techniques on 18 OpenGym environments. 
+#### Summary
+Has a lot of good references for all the different methods out there. All the different methods are well explained in a few lines. Good paper to use as a revision for what was out there towards the end of 2019
+
+
+
