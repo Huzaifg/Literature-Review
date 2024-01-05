@@ -2,8 +2,153 @@
 ![[highlights.pdf]]
 
 
+
+#### Paper Number 77
+#### Title 
+#### One-liner summary
+#### Summary
+
+#### Paper Number 76
+#### Adaptive Risk Minimization: Learning to Adapt to Domain Shift #RL/ModelBased #Meta-Learning  #Adaptation 
+[PDF from Semantic Scholar](https://www.semanticscholar.org/reader/58a4a8e23256e0c9dd5071de0587b84f5f88d8c9)
+
+#### One-liner summary
+*"Our main contribution is to introduce the framework of adaptive risk minimization (ARM), which  
+proposes the following objective: optimize the model such that it can maximally leverage the  
+unlabeled adaptation phase to handle domain shift. To do so, we instantiate a set of methods that,  
+given a set of training domains, meta-learns a model that is adaptable to these domains"*
+#### Summary
+
+#### Paper Number 75
+#### Deployment-Efficient Reinforcement Learning via Model-Based Offline Optimization #RL/ModelBased 
+
+[Annotated PDF in Semantic Scholar](https://www.semanticscholar.org/reader/79ebde314ab90d066cee3b82193ef05666323394)
+
+#### One-liner summary
+*"To achieve high deployment efficiency, we propose Behavior-Regularized Model-ENsemble (BRE-
+MEN). BREMEN incorporates Dyna-style [58 ] model-based RL, learning an ensemble of dynamics
+models in conjunction with a policy using imaginary rollouts from the ensemble and behavior
+regularization via conservative trust-region updates."*
+
+==-> Policy again learnt in the model of the model based learning==
+#### Summary
+![[Pasted image 20240104175534.png]]
+#### Paper Number 74
+#### DREAM TO CONTROL: LEARNING BEHAVIORS BY LATENT IMAGINATION #RL/ModelBased #World-Model  
+[Annotated PDF on Semantic Scholar](https://www.semanticscholar.org/reader/0cc956565c7d249d4197eeb1dbab6523c648b2c9
+)
+#### One-liner summary
+*"We present Dreamer, a reinforcement learning  
+agent that solves long-horizon tasks from images purely by latent imagination.  
+We efficiently learn behaviors by propagating analytic gradients of learned state  
+values back through trajectories imagined in the compact state space of a learned  
+world model."*
+
+==-> Key point here is that they also have a model for the value estimates that they learn using analytical gradients of their world model (this value model comes from an Actor Critic method)==
+==-> Again note that the action model and the value model is learnt in the latent space of the world model==
+==-> Only because their world model is "differentiable" (because its just neural networks), they can back propogate to train the value network==
+#### Summary
+1) #Method What the paper brings to the table 
+	1) *"The key contributions of this paper are summarized as follows:  
+• **Learning long-horizon behaviors by latent imagination**: Model-based agents can be short-  
+sighted if they use a finite imagination horizon. We approach this limitation by predicting both  
+actions and state values. Training purely by imagination in a latent space lets us efficiently learn  
+the policy by propagating analytic value gradients back through the latent dynamics.  
+• **Empirical performance for visual control** : We pair Dreamer with existing representation  
+learning methods and evaluate it on the DeepMind Control Suite with image inputs, illustrated in  
+Figure 2. Using the same hyper parameters for all tasks, Dreamer exceeds previous model-based  
+and model-free agents in terms of data-efficiency, computation time, and final performance"*
+2) #Method Things that are learnt
+	1) Latent Dynamics model (representation model, transition model and reward model) from past experience to predict future rewards from actions and past observations
+	2) Action and value models from predicted latent trajectories. The value model optimizes Bellman consistency for imagined rewards and the action model is updated by propagating gradients of value estimates back through the neural network dynamics
+3) #Method Action and value models use latent states
+	1) *"We learn an action model and a value model in the latent space of the world model for this. The action model implements the policy and aims to predict actions that solve the imagination environment"*
+4) #Citable Why learning the reward model directly is not great
+	1) *"In principle, this could be achieved by simply learning to predict future rewards given actions and past observations (Oh et al., 2017; Gelada et al., 2019; Schrittwieser et al., 2019). With a large and diverse dataset, such representations should be sufficient for solving a control task. However, with a finite dataset and especially when rewards are sparse, learning about observations that correlate with rewards is likely to improve the world model"*
+Did not understand very well how these networks are trained.
+#### Paper Number 73 
+#### Adaptive Online Planning for Continual Lifelong  Learning #RL/Hybrid 
+[Annotated PDF on Semantic Scholar](https://www.semanticscholar.org/reader/1690d6db86ed751bf7fb29fb768d1418ba579abc)
+
+#### One-liner summary
+*"We present a new algorithm,  
+Adaptive Online Planning (AOP), that is capable of achieving strong performance  
+in this setting by combining model-based planning with model-free learning. By  
+measuring the performance of the planner and the uncertainty of the model-free  
+components, AOP is able to call upon more extensive planning only when necessary,"*
+
+-> **Uses an ensemble of value functions that go into the reward for MPC**
+#### Summary
+1) #Citable Model based vs Model free
+	1) *"Model-based trajectory optimization via planning is useful for quickly learning control, but is  
+computationally demanding and can lead to bias due to the finite planning horizon. Model-free  
+reinforcement learning is sample inefficient, but capable of cheaply accessing past experience without  
+sacrifices to asymptotic performance"*
+
+2) #Method How is using a Planner vs Learned policy solved here? 
+	1) *"Deciding when to use the planner vs a learned policy presents a difficult challenge, as it is hard to  determine the improvement the planner would yield without actually running the planner. We tackle this as a problem of uncertainty. When uncertain about a course of action, humans use an elongated model-based search to evaluate long-term trajectories, but fall back on habitual behaviors learned with model-free paradigms when they are certain of what to do"*
+	2) The model has access to ground truth dynamics. This is a #Details that should not be missed
+3) #Method The different algorithms used
+	1) *"We present a new algorithm, Adaptive Online Planning (AOP), that links Model Predictive Path Integral control (MPPI) [32], a model-based planner, with Twin Delayed DDPG (TD3) [ 12 ], a model-free policy learning method"*
+	2) *"We combine the model-based planning method of iteratively updating a planned trajectory with the model-free method of updating the network weights to develop a unified update rule formulation that is amenable to reduced computation when combined with a switching mechanism. We inform this mechanism with the uncertainty given by an ensemble of value functions."*
+4) #Method Early Planning Termination
+	1) They use early planning termination (MPC does not run for fixed number of iterations but for iterations till there is an improvement above a certain threshold). *"When this improvement decreases below a threshold ∆thres, we terminate planning for the current timestep with probability 1 − plan. Using a stochastic termination rule allows for robustness against local minima where more extensive planning may be required, but not evident from early planning iterations, in order to escape."*
+5) #Method Adaptive Planning Horizon
+	1) #Details on Page 4
+6) #Method Model Free TD3 as a prior to the planning procedure
+	1) *"We use TD3 as a prior to the planning procedure, with the policy learning off of the data generated by the planner during planning, which allows the agent to recall past experience quickly"*
+7) 
+
+
+#### Paper Number 72
+#### When to Trust Your Model: Model-Based Policy Optimization #RL/ModelBased 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/9001698e033524864d4d45f051a5ba362d4afd9e)
+#### One-liner summary
+**ChatGPT:** *This method efficiently balances the use of model-generated data and real data, mitigating the bias inherent in model-generated data. The approach demonstrates superior sample efficiency and asymptotic performance compared to existing model-based methods, while avoiding pitfalls such as model exploitation. The paper provides both theoretical analysis and empirical evidence to support the effectiveness of using short model-generated rollouts in reinforcement learning.*
+#### Summary
+1) They seem to judiciously use the learnt model and the actual simulator in gaining data to train their RL policy
+2) #Citable 
+	1) *"However, an empirical study of  model generalization shows that predictive models can indeed perform well outside of their training distribution."*
+
+#### Paper Number 71
+#### MODEL-ENSEMBLE TRUST-REGION POLICY OPTIMIZATION #RL/ModelBased #ProbabilisticDynamicModels 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/27dfecb6bb0308c7484e13dcaefd5eeebba677d3)
+
+#### One-liner summary
+**Paper that shows that an ensemble of learnt models acts as a regularizer**
+#### Summary
+1) #Citable 
+	1) *"Model uncertainty is a principled way to reduce model bias"*
+
+#### Paper Number 70
+![[2021ArgensonModelBasedOfflinePlanning.pdf]]
+#### MODEL-BASED OFFLINE PLANNING - #RL/ModelBased #ProbabilisticDynamicModels #StochasticPlanning 
+
+#### One-liner summary
+*"Our proposed algorithm, MBOP (Model-Based Offline Planning), is a model-based RL algorithm
+able to produce performant policies entirely from logs of a less-performant policy, without ever
+interacting with the actual environment. MBOP learns a world model and leverages a particle-based
+trajectory optimizer and model-predictive control (MPC) to produce a control action conditioned on
+the current state."*
+
+**Its a combination of Paper 69 and 68**
+#### Summary
+1) #Citable More advantages of Model Based RL
+	1) *"This is interesting because the final policy can be more easily adapted to new tasks, be made to respect constraints, or offer some level of explainability. When bringing learned controllers to industrial systems, many of these aspects are highly desirable, even to the expense of raw performance."*
+2) #Citable Adaptive nature of model based RL
+	1) *"We show that MBOP successfully integrates constraints that were not initially in the dataset and is able to perform well on objectives that are different from the objective of the behavior policy"*
+3) #Citable Conclusions
+	1) *"MBOP provides an easy to implement, data-efficient, stable, and flexible algorithm for policy generation. It is easy to implement because the learning components are simple supervised learners, it is data-efficient thanks to its use of multiple complementary estimators, and it is flexible due to its use of on-line planning which allows it to dynamically react to changing goals, costs and environmental constraints."*
+4) #Method The NN's involved
+![[Pasted image 20240103112230.png]]
+3) #Method** Extension of Paper Number 69**
+	1) *"MBOP-Trajopt extends ideas used by PDDM (Nagabandi et al., 2020) by adding a policy prior (provided by fb ) and value prediction (provided by fR )."*
+	2) In  essence they do iterative guided-shooting trajectory optimization with refinement
+	3) #Details of algorithm in page 5
 #### Paper Number 69
-####  Deep Dynamics Models for Learning Dexterous Manipulation #Incomplete 
+####  Deep Dynamics Models for Learning Dexterous Manipulation #RL/ModelBased #ProbabilisticDynamicModels  #StochasticPlanning
+[Annotated PDF from Semantic Scholar](https://www.semanticscholar.org/reader/7a450675968d31b8363e21fb5d5b72474c128076)
+
 #### One-liner summary
 Online Planning with Deep Dynamics Models (PDDM)
 *"we show that improvements in learned dynamics models, together with improvements in online model-predictive control, can indeed enable efficient and effective learning of flexible contact-rich dexterous manipulation skills – and that too, on a 24-DoF anthropomorphic hand in the real world, using just 4 hours of purely real-world data to learn to simultaneously coordinate multiple free-floating objects"*
@@ -12,23 +157,48 @@ Online Planning with Deep Dynamics Models (PDDM)
 1) #Citable Complex physics needed for dexterous manipulation
 	1) *"The principle challenges in dexterous manipulation stem from the need to coordinate numerous joints and impart complex forces onto the object of interest. The need to repeatedly establish and break contacts presents an especially difficult problem for analytic approaches, which require accurate models of the physics of the system."*
 2) #Citable One of the first applications of using model based RL for complex tasks
-	1) *"Our approach, based on deep model-based RL, challenges the general machine learning community’s notion that models are difficult to learn and do not yet deliver control results that are as impressive as modelfree methods"*
+	1) *"Our approach, based on deep model-based RL, challenges the general machine learning community’s notion that models are difficult to learn and do not yet deliver control results that are as impressive as model free methods"*
 	2) 
-3) #Method This is a combination of many methods
+3) #Citable Probabilistic models are good
+	1) *"As prior work has indicated, capturing epistemic uncertainty in the network weights is indeed important in model-based RL, especially with high-capacity models that are liable to overfit to the training set and extrapolate erroneously outside of it"*
+	2) #Definition **Bootstrap ensembles** - *"approximate the posterior p(θ|D) with a set of E models, each with parameters θi. For deep models, prior work has observed that bootstrap resampling is unnecessary, and it is sufficient to simply initialize each model θi with a different random initialization $\theta_0^i$ and use different batches of data $D_i$ at each train step"  
+4) #Citable Why Model-based RL might be more data efficient
+	1) *"We note that this supervised learning setup makes more efficient use of the data than the counterpart model-free methods, since we get dense training signals from each state transition and we are able to use all data (even off-policy data) to make training progress."*
+4) #Method This is a combination of many methods
 	1) *"Our method combines components from multiple prior works, including uncertainty estimation deep models and model-predictive control (MPC), and stochastic optimization for planning"*
+	2) They use online planning with MPC to select actions via  model predictions
+	3) #Details **They have explanations for a bunch of optimizer they use in the MPC loop on page 4**
+		1) Random shooting
+		2) Iterative Random-shooting with Refinement
+		3) Filtering and Reward-Weighted Refinement
+5) #Results Ablation studies for the various choices they made
+![[Pasted image 20240103093609.png]]
+6) #Results Outperforms other model-based and model-free approaches
+![[Pasted image 20240103093846.png]]
+7) #Results Smashing
+	1) *"As we show in our experiments, our method achieves substantially better results than prior deep model-based RL methods, and it also has advantages over model-free RL: it requires substantially less training data and results in a model that can be flexibly reused to perform a wide variety of user-specified tasks. In direct comparisons, our approach substantially outperforms state-of-the-art model-free RL methods on tasks that demand high flexibility, such as writing user-specified characters. In addition to analyzing the approach on our simulated suite of tasks using 1-2 hours worth of training data, we demonstrate PDDM on a rea-lworld 24 DoF anthropomorphic hand, showing successful in-hand manipulation of objects using just 4 hours worth of entirely real-world interactions"*
+	
 
-
-
+![[2019LowreyPOLO.pdf]]
 #### Paper Number 68
-#### MODEL-BASED OFFLINE PLANNING - #Incomplete
+#### Plan Online, Learn Offline: Efficient Learning and Exploration via Model-Based Control #RL/ModelBased 
 
 #### One-liner summary
-*"Our proposed algorithm, MBOP (Model-Based Offline Planning), is a model-based RL algorithm
-able to produce performant policies entirely from logs of a less-performant policy, without ever
-interacting with the actual environment. MBOP learns a world model and leverages a particle-based
-trajectory optimizer and model-predictive control (MPC) to produce a control action conditioned on
-the current state."*
+*"The POLO framework combines three components: local trajectory optimization, global value function approximation, and an uncertainty and reward aware exploration strategy."*
+
+**This could be a great algo for sparse reward exploration problems**
+Combines planning with learning of an approximate value function
 #### Summary
+1) #Citable The strengths of MPC
+	1) *"MPC (with H > 1) is less susceptible to approximation errors than greedy action selection."*
+	2) *"MPC can also enable faster convergence of the value function approximation"*
+	3) *"The ability of an agent to explore the relevant parts of the state space is critical for the convergence of many RL algorithms. Typical exploration strategies like -greedy and Boltzmann take exploratory actions with some probability on a per time-step basis. Instead, by using MPC, the agent can explore in the space of trajectories. The agent can consider a hypothesis of potential reward regions in the state space, and then execute the optimal trajectory conditioned on this belief, resulting in a temporally coordinated sequence of actions. By executing such coordinated actions, the agent can cover the state space more rapidly and intentionally, and avoid back and forth wandering that can slow down the learning."*
+2) #Method 
+	1) They have an ensemble of value functions that they train using Maximum Likelihood
+	2) #Details **Final algorithm in page 5**
+3) #Method  In own words because the text is too convoluted
+	1) They use a standard model as the M of MPC
+	2) However they learn ensemble of value functions and use that for global exploration while using MPC for planning. This ensemble of value functions tracks the "uncertainty" associated with not visiting certain states
 
 
 
@@ -93,7 +263,8 @@ Use gradient while planning
 
 
 #### Paper Number 64
-#### LEARNING TO ADAPT IN DYNAMIC, REAL-WORLD  ENVIRONMENTS THROUGH META-REINFORCEMENT LEARNING #RL/ModelBased #Meta-Learning
+#### LEARNING TO ADAPT IN DYNAMIC, REAL-WORLD  ENVIRONMENTS THROUGH META-REINFORCEMENT LEARNING #RL/ModelBased #Meta-Learning #Adaptation
+
 [Annoted PDF in Semantic Scholar](https://www.semanticscholar.org/reader/944bd3b472c8a30163bbfc1b5cbab8545693c3e0)
 
 
@@ -119,7 +290,7 @@ The planner used is MPPI in sim and MPC with random shooting in reality.
 	4) On the real robot, their method out performs Model Based methods and Model Based methods with Dynamic evaluation. *"1)adapt online to a missing leg, 2) adjust to novel terrains and slopes, 3) account  for miscalibration or errors in pose estimation, and 4) compensate for pulling payloads"* 
 
 #### Paper Number 63
-#### Deep Reinforcement Learning in a Handful of Trials  using Probabilistic Dynamics Models #RL/ModelBased #ProbabilisticDynamicModels 
+#### Deep Reinforcement Learning in a Handful of Trials  using Probabilistic Dynamics Models #RL/ModelBased #ProbabilisticDynamicModels #StochasticPlanning 
 [Annotated PDF on Semantic Scholar](https://www.semanticscholar.org/reader/56136aa0b2c347cbcf3d50821f310c4253155026)
 
 #### One-liner summary
