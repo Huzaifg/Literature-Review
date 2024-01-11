@@ -2,11 +2,385 @@
 ![[highlights.pdf]]
 
 
-
-#### Paper Number 77
+#### Paper Number 97
 #### Title 
+
 #### One-liner summary
 #### Summary
+
+
+#### Paper Number 96
+#### FastRLAP: A System for Learning High-Speed Driving via Deep RL and Autonomous Practicing #Year-2023 #RL #OfflineLearning 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/099c2f6509391246152fbb5c2cd8757dc164ed65)
+#### One-liner summary
+*"Our system, FastRLAP (faster lap), trains autonomously in the real world, without human interventions, and without requiring any simulation or expert demonstrations. Our system integrates a number of important  components to make this possible: we initialize the representations for the RL policy and value function from a large prior dataset of other robots navigating in other environments (at low speed), which provides a navigation-relevant representation. From here, a sample-efficient online RL method uses a single low-speed user-provided demonstration to determine the desired driving course, extracts a set of navigational checkpoints, and autonomously practices driving through these checkpoints, resetting automatically on collision or failure."*
+
+==-> Use offline data from other robots to pre-train the encoder to extract features of the navigation task==. This speeds up training by a whole lot
+==-> A lot of nice hardware related content on page 5==
+==-> Shifted tanh activation used for smooth control==
+#### Summary
+1) #Method Main approach
+	1) *"Therefore, our approach combines online RL training with a set of pre-training and initialization steps that aim to maximally transfer prior knowledge to bootstrap real-world RL. Specifically, we aim to use prior data to learn a useful representation of visual observations that captures driving-related features, such as free space and obstacles, while also adapting online to the target domain."*
+2) #Method Uses existing data from other robots to bootstrapt and learn quickly online
+	1) *" Therefore, our approach combines online RL training with a set of pre-training and initialization steps that aim to maximally transfer prior knowledge to bootstrap real-world RL. Specifically, we aim to use prior data to learn a useful representation of visual observations that captures driving-related features, such as free space and obstacles, while also adapting online to the target domain."*
+3) #Method Their state space is interesting
+	1) *"Here, V ∈ R128×128×3×3 is a stacked sequence of the last 3 RGB images; v, ω, α ∈ R3 denote the linear velocity, angular velocity, and linear acceleration; the goal g is provided as a relative vector to the next checkpoint, written as a 2D unit vector and a distance; aprev is the previous action."*
+4) #Method Ensemble of critics used to regularize
+5) #Method State estimation indoors provided by RealSense tracking cameras
+	1) *"To estimate state in indoor environments, we use a RealSense T265 tracking camera to provide local visual inertial odometry estimates for the positions of the robot and intermediate checkpoints"*
+6) #Method A lot of nice stuff about how the hardware is implemented in #Details on page 5
+7) #Details on actuation of motors is provided in page 5
+8) #Method **Shifted tanh used to provide smooth actions**
+	1) *"To overcome this, we enforce continuity in the policy’s outputs by constraining them to be near the previous action by modifying the action space: (i) instead of the standard tanh activation to limit the action space in [−1, 1] (used by actor), we use a shifted tanh that limits it to the range [aprev − δ, aprev + δ], i.e., near previous action, bounded by δ > 0, and (ii) we append the previous action to the observed state."*
+
+
+#### Paper Number 95
+#### PLANNING GOALS FOR EXPLORATION #Year-2023 #RL/ModelBased #World-Model  
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/5045c2a64a4ea41d8da9ee8eb279498db1ff3d78)
+
+#### One-liner summary
+
+*"We propose “Planning Exploratory Goals” (PEG), a method that sets goals for each training episode to directly optimize an intrinsic exploration reward. PEG first chooses goal commands such that the agent’s goal-conditioned policy, at its current level of training, will end up in states with high exploration potential. It then launches an exploration policy starting at those promising states. To enable this direct optimization, PEG learns world models and adapts sampling-based planning algorithms to “plan goal commands”"*
+
+==-> Provides a nice way for a world model to train better by learning a exploration network alongside a goal reaching network and optimizing for reaching goals that enable exploration==
+#### Summary
+1) #Method Main contributions
+	1) *"We propose a novel paradigm for goal-directed exploration by directly optimizing goal selection to generate trajectories with high exploration value. Next, we show how learned world models permit an effective implementation of goal command planning, by adapting planning algorithms that are often used for low-level action sequence planning"*
+2) #Method Very good plot basically explaining the entire method - pick a goal that maximizes the exploration reward from that state - Train $\pi^G$ to reach that goal and $\pi^E$ to explore efficiently from that goal
+	1) ![[Pasted image 20240111162736.png]]
+	2) *"First command goals that lead the goal policy to states that have high future exploration potential, then explore."*
+
+#### Paper Number 94 
+#### Hindsight States: Blending Sim & Real Task Elements for Efficient Reinforcement Learning #Year-2023 #sim2real #RL 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/398ae1bb4de8c043b357c2d095c3bea40bb46525)
+#### One-liner summary
+*"Here, we leverage the imbalance in complexity of the dynamics to learn more sample-efficiently. We (i) abstract the task into distinct components, (ii) off-load the simple dynamics parts into the simulation, and (iii) multiply these virtual parts to generate more data in hindsight. Our new method, Hindsight States (HiS), uses this data and selects the most useful transitions for training. It can be used with an arbitrary off-policy algorithm."*
+
+==-> All about using sim for simple dynamics to improve sample efficiency==
+#### Summary
+1) #Citable sim2real gap making people learn on real robots
+	1) *"These downsides of sim-to- real approaches accumulate as tasks advance in complexity, thus, necessitating learning many complex tasks partly or completely on the real system."*
+2) #Citable Hybrid sim and real (HySR)
+	1) *"The idea behind HySR is to keep the complicated parts of the task real, whereas the simpler parts are simulated. This strategy yields significant practical benefits, while facilitating the transfer to the entirely real system."*
+3) #Method Complicated combination of sim and real
+	1) *"Hindsight States (HiS), is to pair the data of a single real instance with additional data generated by concurrently simulating multiple distinct instances of the virtual part. In the example of robot ball games, our method simulates the effect of the robot’s actions on several virtual balls simultaneously. We relabel the virtual part of each roll-out with this additional virtual data in hindsight."*
+
+
+#### Paper Number 93
+#### Risk-aware Path Planning via Probabilistic Fusion of Traversability Prediction for Planetary Rovers on Heterogeneous Terrains #Year-2023 #Navigation #Off-road 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/7580698f6ac3b3b35eaf9ac13df0e8240198faaf)
+#### One-liner summary
+
+*"In this work, we propose a new path planning algorithm that explicitly accounts for such erroneous prediction. The key idea is the probabilistic fusion of distinctive ML models for terrain type classification and slip prediction into a single distribution. This gives us a multi modal slip distribution accounting for heterogeneous terrains and further allows statistical risk assessment to be applied to derive risk-aware traversing costs for path planning."*
+
+#Overview - 
+1) Use terrain classifier model
+2) Use slip estimation model (GP) based that takes as input terrain class and rover pitch
+3) Use CVar to evaluate planned path risk
+
+==-> Conditional value at risk (CVaR) is a nice statistical technique for risk assessment==
+
+==-> The models they use require measurement of terrain pitch angles and wheel slip which are difficult to measure==
+#### Summary
+1) #Citable They first claim that machine learning is not good enough
+	1) *"Machine learning (ML) plays a crucial role in assessing traversability for autonomous rover operations on deformable terrains but suffers from inevitable prediction errors. Especially for heterogeneous terrains where the geological features vary from place to place, erroneous traversability prediction can become more apparent, increasing the risk of unrecoverable rover’s wheel slip and immobilization"*
+2) #Citable Because of bad autonomy the travelling of the rover was very slow
+	1) *"For instance, the Mars Science Laboratory mission reports an average drive distance of the Curiosity rover being limited to 28.9 meters in one Martian solar day (24 hours 39 min [2]),  even though it can travel up to 15.12 m/h"*
+3) #Citable Why navigation on deformable terrain is hard and important very important
+	1) *"On extraterrestrial terrain, what turned out to be hazardous for rovers other than apparent obstacles were deformable surfaces. As a known case, the Curiosity rover experienced significant slips on rippled sand at the Hidden Valley, forced to change its route for more solid terrain. Such excessive wheel slips degrade driving speed, increase energy consumption, and eventually cause permanent entrapment in loose, granular materials. Hence, reliable traversability assessment on deformable terrains is essential for autonomous rover operation and, in turn, for faster, more extended rover exploration."*
+4) #Method Basically they evaluate risk using the uncertinty in the terrain class predictor and uncertainty in the slip estimate given the terrain class. See Page 1 ending for #Details 
+5) ![[Pasted image 20240111151951.png]]
+6) #Citable Why probabilistic models are useful
+	1) When quantized via probabilistic models, uncertainty provides useful risk assessment tools in ML applications.
+
+7) #Method GP maps terrain geometry to wheel slip
+	1) *"To model the unknown relationship between terrain geometry and wheel slip s, we exploit GP, a non-parametric regression approach employing statistical inference to learn dependencies between points in a dataset"*
+	2) Dataset uses privileged information *"as rovers measure terrain pitch angles φ and corresponding longitudinal slips s in the past traverse experience."*
+
+8) #Method Pipeline
+	1) *"We employ two kinds of pre-trained models: 1) a terrain classifier to pixel-wisely predict terrain classes from appearance imagery and 2) GPs to model classdependent LS functions with geometry information. These models are fused into a single, multi-modal probabilistic slip distribution via mixtures of GPs (MGP)"*
+9) 
+#### Paper Number 92
+#### Neural Optimal Control using Learned System Dynamics #Year-2023 #OptimalControl 
+[PDF from Semantic Scholar](https://www.semanticscholar.org/reader/218cf1ccda75676cfdcb5e7008b8d0ea8efee57c)
+#### One-liner summary
+*"Our approach is to represent the controller and the value function with neural networks, and to train them using loss functions adapted from the Hamilton-Jacobi-Bellman (HJB) equations. In the absence of a known dynamics model, our method first learns the state transitions from data collected by interacting with the system in an offline process. The learned transition function is then integrated to the HJB equations and used to forward simulate the control signals produced by our controller in a feedback loop."*
+
+==-> They use sine activations functions for the dynamics MLP which helps capture the angular shift invariance==
+#### Summary
+1) #Method Main contributions of the approach
+	1) *"To this end, our contributions are two-fold: 1) We propose to approximate the state transitions using neural networks with sinusoidal activation functions and supervise them with numerically computed gradients of the system dynamics, 2) We present a method that integrates the learned dynamics into the HJB equations which are used to train the networks representing the controller and the value function. In our experiments, we show that our method can be used in a variety of systems in a sample efficient fashion."*
+2) #Method Using function gradients in supervision
+	1) Here they use function gradients also in the loss which is very interesting. #Citable Apparently it leads to learning better state transitions
+	2) ![[Pasted image 20240110173528.png]]
+
+
+#### Paper Number 91
+#### ALAN: Autonomously Exploring Robotic Agents in the Real World #Year-2023 #RL/ModelBased #Exploration
+[PDF from Semantic Scholar](https://www.semanticscholar.org/reader/f63adcba79ab09c2eed7d22174661be98a018bf4)
+
+#### One-liner summary
+*"Thus, we propose ALAN, an autonomously exploring robotic agent, that can perform tasks in the real world with little training and interaction time. This is enabled by measuring environment change, which reflects object movement and ignores changes in the robot position."*
+
+==-> Great ways to enable exploration of agents that we can use while learning a dynamics model==
+#### Summary
+1) #Method Key intuition behind the method
+	1) *"interactions with objects, which cause changes in the visual features of the observations. Thus, seeking to maximize the change in these visual features can be a useful objective for robots to optimize"*
+	2) *"Seeking to maximize information related to objects in the environment will lead to much more efficient exploration, since the robot will prioritize actions that lead to richer contact interactions"*
+2) #Method Main contributions of the paper
+	1) *"The main contribution of this work is ALAN, an efficient real world exploration algorithm, that seeks to take actions that maximize change in the environment, and maximize uncertainty about its internal model of how changes occur in the environment. This approach encourages the robot to interact with objects, and hence collect data relevant to learning manipulation skills faster."*
+3) #Method Intrinsic motivation - reward for knowing the flaws within one self
+	1) *"When learning a dynamics model of the world, fθ (st+1|st, at), it is possible to use the quality of the model as an intrinsic reward. For instance, Pathak et al. [20] use model prediction error as reward"*
+	2) ![[Pasted image 20240110165244.png]]
+	3) This requires gradients to optimize since we need $s_{t+1}$ for $r_t$
+	4) Another approach as always is to use disagreement between an ensembles of models 
+	5) ![[Pasted image 20240110165423.png]]
+4) #Method World model described in a better way here which I like more 
+	1) ![[Pasted image 20240110165735.png]]
+
+#### Paper Number 90
+#### Efficient Preference-Based Reinforcement Learning Using Learned Dynamics Models #Year-2023 #RL/ModelBased #StochasticPlanning 
+[PDF from Semantic Scholar](https://www.semanticscholar.org/reader/68c7652c408937ed155bb4289decf7d416b381bc)
+
+
+#### One-liner summary
+*"In particular, we provide evidence that a learned dynamics model offers the following benefits when performing PbRL: (1) preference elicitation and policy optimization require significantly fewer environment interactions than model-free PbRL, (2) diverse preference queries can be synthesized safely and efficiently as a byproduct of standard model-based RL, and (3) reward pre-training based on suboptimal demonstrations can be performed without any environmental interaction. Our paper provides empirical evidence that learned dynamics models enable robots to learn customized policies based on user preferences in ways that are safer and more sample efficient than prior preference learning approaches."*
+
+==-> A nice way to explore is presented. Useful for collecting data to train the dynamics model==
+#### Summary
+1) #Citable What are preference base RL techniques
+	1) *"preference-based reinforcement learning (PbRL) approaches query the user for pairwise preferences over trajectories"*
+	2) Basically a reward function is learnt by asking a human to rank between two executed trajectories
+2) #Method Nice exploration method for getting data to train dynamics model **random network distillation**
+	1) *"However, in many domains, random agent-environment interaction may yield insufficient exploration. To collect diverse data for learning a dynamics model, we leverage random network distillation (RND) [12], a powerful approach for exploration in deep RL that provides reward bonuses based on the error of a neural network predicting the output of a randomly-initialized network."*
+#### Paper Number 89
+#### Mastering Diverse Domains through World Models #Year-2023 #RL/ModelBased #World-Model  
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/f2d952a183dfb0a1e031b8a3f535d9f8423d7a6e)
+
+#### One-liner summary
+*"We present DreamerV3, a general and scalable algorithm based on world models that outperforms previous approaches across a wide range of domains with fixed hyperparameters."*
+
+==-> Should try this with the off-road Chrono problem. Will be interesting to see how it does==
+#### Summary
+1) #Method Nice description of the neural networks
+	1) *"The algorithm consists of 3 neural networks: the world model predicts future outcomes of potential actions, the critic judges the value of each situation, and the actor learns to reach valuable situations."*
+2) #Method Key tricks of the trade
+	1) *"Specifically, we find that combining KL balancing and free bits enables the world model to learn without tuning, and scaling down large returns without amplifying small returns allows a fixed policy entropy regularizer."*
+3) #Method They use something called "symlog" in their loss function which seems to be novel and interesting
+
+#### Paper Number 88
+#### Imitation Is Not Enough: Robustifying Imitation with Reinforcement Learning for Challenging Driving Scenarios #Year-2023 #RL/Hybrid #ImitationLearning 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/74af06ac7fa260314064908a8be60d149c55a9ce)
+
+#### One-liner summary
+*"In this paper, we show how imitation learning combined with reinforcement learning using simple rewards can substantially improve the safety and reliability of driving policies over those learned from imitation alone. In particular, we train a policy on over 100k miles of urban driving data, and measure its effectiveness in test scenarios grouped by different levels of collision likelihood."*
+#### Summary
+1) #Citable #Results Advantages of Reinfocement learning over imitation learning
+	1) *"Our analysis shows that while imitation can perform well in low-difficulty scenarios that are well-covered by the demonstration data, our proposed approach significantly improves robustness on the most challenging scenarios (over 38% reduction in failures)."*
+	2) *"This yields policies that are (1) less vulnerable to covariate shifts and spurious correlations commonly seen in open loop IL [5], [6], and (2) aware of safety considerations encoded in their reward function, but which are only implicit in the demonstrations"*
+2) #Citable RL alone is not enough for driving
+	1) *"Without accounting for imitation fidelity, driving policies trained with RL may be technically safe but unnatural, and may have a hard time making forward progress in situations that demand human-like driving behavior to coordinate with other agents and follow driving conventions. IL and RL offer complementary strengths: IL increases realism and eases the reward design burden and RL improves safety and robustness, especially in rare and challenging scenarios in the absence of abundant data"*
+3) #Citable Some good references for combining IL and RL in #Details page 2
+4) #Method Major contributions of the paper
+	1) *"We conduct the first large-scale application of a combined IL and RL approach in autonomous driving utilizing large amounts of real-world urban human driving data (over 100k miles) and a simple reward function."*
+	2) *"We systematically evaluate its performance and baseline performance by slicing the dataset by difficulty, demonstrating that combining IL and RL improves safety and reliability of policies over those learned from imitation alone (over 38% reduction in safety events on the most difficult bucket)."*
+
+
+
+#### Paper Number 87
+#### RT-1: ROBOTICS TRANSFORMER FOR REAL-WORLD CONTROL AT SCALE #Year-2023 #TransformerControl
+
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/fd1cf28a2b8caf2fe29af5e7fa9191cecfedf84d)
+#### One-liner summary
+*"We therefore ask: can we train a single, capable, large multi-task backbone model on data consisting of a wide variety of robotic tasks? And does such a model enjoy the benefits observed in other domains, exhibiting zero-shot generalization to new tasks, environments, and objects?"*
+
+-> Transformer used to parameterize the policy $\pi$ and takes as input a sentence describing the task and 6 image history
+
+#### Summary
+1) #Method We aim to learn robot policies to solve language-conditioned tasks from vision.
+2) #Method $\pi$ which is the transformed is learnt using behavioral cloning
+
+
+#### Paper Number 86
+![[2023PiniAVwithMoE.pdf]]
+#### Safe Real-World Autonomous Driving by Learning to Predict and Plan with a Mixture of Experts #AV #Navigation 
+
+#### One-liner summary
+*" In this paper, we propose modeling a distribution over multiple future trajectories for both the self-driving vehicle and other road agents, using a unified neural network architecture for prediction and planning. During inference, we select the planning trajectory that minimizes a cost taking into account safety and the predicted probabilities."*
+
+==-> The NN used is a Mixture of Experts Transformer model==
+#### Summary
+1) #Method Contributions
+	1) We propose to model the distribution of future trajectories of agents and the SDV using a mixture of experts in a unified neural network for prediction and planning
+	2) We present an efficient and easy to implement decision-making approach that leverages the predicted trajectories and associated probabilities to improve safety by reducing collisions between the SDV and other road agents
+	3) We extensively validate our proposal in a realistic closed-loop simulator and deploy it on an SDV driving on public roads, confirming its effectiveness and safety
+2) #Citable Covariate shift problem in Imitation learning
+	1) *"Although imitation approaches showed significant progress, the covariate shift induced by the policy is still an open problem that can make the model perform poorly during deployment."*
+
+#### Paper Number 85
+#### SAM-RL: Sensing-Aware Model-Based Reinforcement Learning via  Differentiable Physics-Based Simulation and Rendering #DifferentiableSimulation #RL/ModelBased  #Year-2023 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/0cc2a916ac1281d3217c775c5bc63844d31a5ba8)
+#### One-liner summary
+*"In this work, we propose a sensing-aware model-based reinforcement learning system called SAM-RL. Leveraging the differentiable physics-based simulation and rendering, SAM-RL automatically updates the model by comparing rendered images with real raw images and produces the policy efficiently."*
+
+-> The approach seems hard to be possible in real-world because sim updates have to happen in real-time and they seem pretty complicated
+#### Summary
+1) #Method Three main contributions
+	1) *"First, the system no longer requires obtaining a sequence of camera poses at each step, which is extremely time-consuming. Second, compared with using a fixed view, SAM-RL leverages varying camera views with potentially fewer occlusions and offers better estimations of environment states and object status (especially for deformable bodies). The improved quality in object status estimation contributes more effective robotic actions to complete various tasks. Third, ==by comparing rendered and measured (i.e., realworld) images, discrepancies between the simulation and the reality are better revealed and then reduced automatically using gradient-based optimization and differentiable rendering"*==
+2) #Method Using differentiable rendering 
+	1) Important #Details on how they use the entire pipeline is section 3 2) on page 4
+3) #Method The algorithm is very intersing
+![[Pasted image 20240108162812.png|300]]
+
+#### Paper Number 84
+#### GNM: A General Navigation Model to Drive Any Robot #Navigation #Year-2023 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/3ac400f1ca96a7ccb5a1b7790684abcb00464871)
+#### One-liner summary
+*"In this paper, we study how a general goal-conditioned model for vision-based navigation can be trained on data obtained from many distinct but structurally similar robots, and enable broad generalization across environments and embodiment's"*
+
+*"We curate 60 hours of navigation trajectories from 6 distinct robots, and deploy the trained GNM on a range of new robots, including an underactuated quadrotor."*
+#### Summary
+1) #Method The biggest contribution is the dataset and this is impressive
+	1) *"The GNM dataset contains over 60 hours of real-world navigation trajectories: a combination of tele-operated and autonomous navigation behaviors collected across 6 distinct robotic platforms, including 4 commercially available platforms (TurtleBot, Clearpath Jackal, Warthog and Spot) and 2 custom platforms (Yamaha Viking ATV, RC Car). The trajectories contain widely varying robot dynamics and top speeds ranging between 0.2 and 10m/s, operating in a diverse set of environments (e.g., office buildings, hallways, suburban, off-road trails, university campus etc.)."*
+	 ![[Pasted image 20240108114500.png]]
+2) #Citable Why a shared action space is good - It helps generalizing across different robots
+	1) *"Learning a common control policy that operates directly on these raw, unstructured outputs can be challenging due to these inconsistencies and high-variance outputs (e.g., speed ∈  [0.2, 10]m/s)."*
+	2) *"To this end, we propose using a shared abstraction to allow the goal-reaching policies to operate in a transformed action space that is consistent across robots, making the data points look “similar” and easier to learn common patterns from"*
+3) #Method Two key ingredients for generating such a policy is
+	1) Shared abstract action space 
+	2) Embodiment context that bakes in the capabilities of that particular robot : *"For instance, a TurtleBot can spin in-place but not go over bumps on the road, whereas an RC Car can easily traverse small bumps but has a limited turning radius"*
+4) #Method This embodiment context is interesting
+	1) *"we use a sequence of consecutive past observations from the robot’s viewpoint to infer a learned embodiment context Ct, and condition the learned policy on this context in addition to the observations. This context contains information about the robot’s configuration and dynamics, which can be used to condition the behavior of the policy."*
+
+
+#### Paper Number 83
+![[2023LeeUncertaintyAwareNavigationOffRoad.pdf]]
+#### Learning-based Uncertainty-aware Navigation in 3D Off-Road Terrains #Off-road #Navigation #Year-2023  
+
+#### One-liner summary
+*"The proposed algorithm learns the terrain-induced uncertainties from driving
+data and encodes the learned uncertainty distribution into the traversability cost for path evaluation. The navigation path is then designed to optimize the uncertainty-aware traversability cost, resulting in a safe and agile vehicle maneuver.****"
+
+==-> A Gaussian process model is used to infer the vehicle-terrain interactions==
+Everything again done in sim (Gazebo)
+#### Summary
+1) #Method The entire approach in simple words
+	1) *" First, raw sensor measurements are processed to construct a geometric traversability cost map, and the terrain type map encodes semantic features (e.g., grass, mud, asphalt, etc.). Then, the vehicle-terrain interactions for individual terrain types are respectively learned through Gaussian Process (GP) regression models. By virtue of the GP models, the terrain-induced uncertainties can be expressed by probability distributions. These distributions are used to predict the actual path distributions of the vehicle when the vehicle follows the candidate path, resulting in predictive path distributions [16]. Next, the best path is found by evaluating the cost metrics associated with traversability, rollover risk, and distance to the goal."*
+2) #Method Another overview
+	1) Mutiple GP models for multiple terrains -> ==The GP model is trained to predict the errors==
+	2) Sensors (Camera and Lidar) is used to learn a traversibility cost and terrain type map
+
+
+
+#### Paper Number 82
+#### RAMP-Net: A Robust Adaptive MPC for Quadrotors via Physics-informed Neural **Network** #Data-Driven-Dynamics #Adaptive-MPC #Year-2023 
+[PDF in Semantic Scholar](https://www.semanticscholar.org/reader/d9c67fae3cdc029362bb0f83743bea89866a4909)
+
+#### One-liner summary
+*"In this work, we propose a Robust Adaptive MPC framework via PINNs (RAMP-Net), which uses a neural network trained partly from simple ODEs and partly from data. A physics loss is used to learn simple ODEs representing ideal dynamics."*
+
+==-> Everything is completely in a Gazebo sim==
+#### Summary
+1) #Method PINNs 
+	1) *We formulate the ideal system dynamics of a quadrotor  to fit the residual dynamics as a physics loss and use a data loss to capture additional dynamics unaccounted   during mathematical modelling (Section III).  
+	2) We train a PINN using the composite loss (sum of the above mentioned loss functions) to approximate the non- linear dynamics of a quadrotor to propose RAMP-Net – a robust adaptive MPC via PINNs (Section IV).  
+	3) We perform trajectory tracking of a Hummingbird quadrotor in the Gazebo simulation environment to obtain ∼ 60% lesser tracking error compared to a SOTA regression-based method along with ∼ 11% faster convergence"*
+2) #Citable About using parametric uncertain models
+	1) *"To reduce the conservatism of robust controllers, adaptive MPC techniques [26], [27] consider   parametric uncertainties over state variables. Such techniques either use functional analysis methods to guarantee closed- loop stability or adapts the controller parameters to mimic a reference model. However, such methods are limited to tackle only parametric uncertainties and tend to overfit to the analytical reference models, a phenomenon known as model drift. Hence, model-based adaptive MPC does not guarantee optimal convergence to true parameters"*
+3) #Results #Citable Pure model based MPC suffer when uncertain dynamics added
+	1) *"Pure model based robust MPC techniques suffer performance degradation when subjected to uncertain dynamic disturbance"*
+
+#### Paper Number 81
+#### Masked World Models for Visual Control #RL/ModelBased #World-Model  #Year-2022
+[PDF of Semantic Scholar](https://www.semanticscholar.org/reader/31d629bb161d8199e18b6f2ed7e4ecbda10b6797)
+#### One-liner summary
+*"In this work, we introduce a visual model-based RL framework that decouples visual representation learning and dynamics learning. Specifically, we train an ==autoencoder with convolutional layers and vision transformers (ViT) to reconstruct pixels given masked convolutional features, and learn a latent dynamics model that operates on the representations from the autoencoder.=="*
+#### Summary
+1) #Method Key aspects of how the vision and dynamics model are learnt
+	1) *"The key idea of MWM is to train an autoencoder that reconstructs visual observations with convolutional feature masking, and a latent dynamics model on top of the autoencoder"*
+	2) The masked autoencoder also predicts reward. This helps it learn task relevant features
+	3) *"Specifically, we separately update visual representations and dynamics by repeating the iterative processes of (i) training the autoencoder with convolutional feature masking and reward prediction, and (ii) learning the latent dynamics model that predicts visual representations from the autoencoder"*
+2) #Method Very nice and short summary on dreamer models and Masked autoencoder in #Details Page 3 and 4
+
+#### Paper Number 80
+![[2023SukhijaTrajOptWithLearnedDynamics.pdf]]
+#### Gradient-Based Trajectory Optimization With Learned Dynamics #RL/ModelBased #Year-2023  
+
+#### One-liner summary
+*"We show that a neural network can model highly nonlinear behaviors
+accurately for large time horizons, from data collected in
+only 25 minutes of interactions on two distinct robots: (i) the
+Boston Dynamics Spot and an (ii) RC car. Furthermore, we
+use the gradients of the neural network to perform gradient-
+based trajectory optimization. "*
+
+==-> Learn Dynamics model from 25 minutes of on-board data (RNNs and Feed Forward networks)==
+#### Summary
+1) #Citable GPs scale poorly for large datasets
+	1) *"GPs are powerful non-parametric machine learning models that can exhibit strong theoretical guarantees, but they scale poorly for large datasets"*
+2) #Citable #Results  They found that an RNN gave better performance than an NN
+	1) *" On the left in Fig. 4, we compare the testerror accumulation over open-loop predictions for varying horizons between (i) simple model, (ii) neural network model, and (iii) RNN (GRU) model. The errors of the simple model increase drastically with the horizon length. Nonetheless, the neural network model and the GRU model show better performance, with the GRU giving better results."*
+3) #Results There data driven model is bad for long term trajectories -> Fails in open loop settings
+
+#### Paper Number 79
+#### VI-IKD: High-Speed Accurate Off-Road Navigation using Learned  Visual-Inertial Inverse Kinodynamics #Navigation #Off-road 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/2328d805cd7d01bf1009769a9f684cb78d68070f)
+
+#### One-liner summary
+*"we introduce Visual-Inertial Inverse Kinodynamics (VI-IKD), a novel learning  based IKD model that is conditioned on visual information from a terrain patch ahead of the robot in addition to past inertial   information, enabling it to anticipate kinodynamic interactions in the future. We validate the effectiveness of VI-IKD in accurate high-speed off-road navigation experimentally on a scale 1/5 UT-AlphaTruck off-road autonomous vehicle in both indoor and outdoor environments and show that compared to other state-of-the-art approaches, VI-IKD enables more accurate and robust off-road navigation on a variety of different terrains at speeds of up to 3.5m/s."*
+#### Summary
+1) #Citable Why modelling dynamics and actuation latency's is important at high speeds
+	1) *"While ignoring such  effects at low speeds may be acceptable, the combination of actuation latency coupled with kinodynamic responses due to vehicle-terrain interaction can have a magnified effect on the state of a vehicle when travelling at high speeds, and can be catastrophic (e.g., cause collisions) if not accounted for by the controller."*
+2) #Method Why they also need a visual sensor in addition to an inertial sensor
+	1) *"A model relying on inertial information alone cannot foresee the kinodynamic response at this future position. Unlike an inertial sensor, a visual sensor from an egocentric viewpoint enables perception of the world ahead, providing information about the terrain the vehicle will interact with in the future. We therefore hypothesize that in addition to inertial information from the past, conditioning a learned IKD model on the visual information of the terrain ahead will improve the vehicle’s capability to accurately navigate at high speeds."*
+3) #Method Training
+![[Pasted image 20240105174402.png|300]]
+4) #Method Visual patch extractor and training
+	1) One key contribution is the visual patch extractor. See Page 4 for #Details 
+	2) Training is done by imitation in the real world with this loss function ($u_t$ is produced by expert)
+	![[Pasted image 20240105175520.png]]
+5) #Method 
+	1) Hausdorf distance used to measure distance between 2 trajectories 
+#### Paper Number 78
+![[2021IbarzDRLLessonsLearnt.pdf]]
+#### How to train your robot with deep reinforcement learning: lessons we have learned #survey #RL 
+#### One-liner summary
+
+#### Summary
+1) #Citable Why closing Sim2Real gap is so important
+	1) *"In simulations, the robots can learn to backflip (Peng et al., 2018a) bicycle stunts (Tan et al., 2014), and even put on clothes (Clegg et al., 2018). In contrast, it is still very challenging to teach robots to perform basic tasks such as walking in the real world. Bridging the reality gap will allow robotics to fully tap into the power of learning. More importantly, bridging the reality gap is important to push the advancement of machine learning for robotics towards the right direction"*
+2) #Citable Major cause of sim2real gap is unknown
+	1) *"The reality gap is caused by the discrepancy between the simulation and the real-world physics. This error has many sources, including incorrect physical parameters, unmodeled dynamics, and stochastic real environment. However, there is no general consensus about which of these sources plays a more important role. After a large number of experiments with legged robots, both in simulation and on real robots, we found that the actuator dynamics and the lack of latency modeling are the main causes of the model error. ==Developing accurate models for the actuator and latency significantly narrow the reality gap=="*
+3) #Citable Model exploitation in MBRL and how its solved
+	1) *"model-based RL approaches is model exploitation, i.e., when the model is imperfect in some parts of the state space, and the optimization over actions finds parts of the state space where the model is erroneously optimistic. This can result in poor action selection"*
+	2) *"First, we have found that optimization under the model is successful when the data distribution consists of particularly broad distributions over actions and states"*
+	3) Another way is model uncertinty
+	4) Can make the models adapatable
+4) #Citable How to get smooth actions
+	1) *"Typically, exploration strategies are realized by adding random noise to the actions. Uncorrelated random noise injected in the action space for exploration can cause jerky motions, which may damage the gearbox and the actuators, and thus is unsafe to execute on the robot. Options for smoothing out jerky actions during exploration include: reward shaping by penalizing jerkiness of the motion, mimicking smooth reference trajectories (Peng et al., 2018a), learning an additive feed- back together with a trajectory generator (Iscen et al., 2018), sampling temporal coherent noise (Haarnoja et al., 2019; Yang et al., 2020), or smoothing the action sequence with low-pass filters. All these techniques work well, although additional manual tuning or user-specified data may be required."*
+
+#### Paper Number 77
+![[2021SivaTerrainAdaptation.pdf]]
+#### Enhancing Consistent Ground Maneuverability by Robot Adaptation to Complex Off-Road Terrains #Off-road #Navigation
+#### One-liner summary
+*"Our approach learns offset behaviors in a self-supervised fashion, allowing the robot to compensate
+for the inconsistency between the actual and expected behaviors without explicitly modeling the
+setbacks, while also adaptively navigating over changing terrain."*
+
+==-> Terrain classification a bunch of papers in page 2==
+==-> Terrain adaptation a bunch of papers in page 2==
+#### Summary
+1) #Citable Learning based methods for terrains
+	1) *"learning-based methods can be divided into two broad categories: terrain classification and terrain adaptation. The first category uses a robot’s exteroceptive and proprioceptive sensory data to classify terrain types and estimate traversability for robot navigation over the terrain This category also includes techniques that model terrain complexity for navigation planning [5, 11]. The second category of methods focus on directly generating adaptive behaviors according to terrain in order to successfully complete navigation tasks"*
+2) #Method Key Contributions 
+	   1) *"The specific novel contributions include:
+• We propose a novel mathematical formulation to generate consistent navigational behaviors
+by learning offset behaviors in a self-supervised fashion. We also introduce new regulariza-
+tion terms to learn important terrain features from multi-sensory observations and fuse them
+together to improve robustness of robot adaptation to unstructured terrain.
+• We propose a new optimization algorithm to address the formulated regularized optimization problem with dependent variables and non-term regularization terms, which holds a
+theoretical guarantee to effectively converge to the global optimal solution."*
+
 
 #### Paper Number 76
 #### Adaptive Risk Minimization: Learning to Adapt to Domain Shift #RL/ModelBased #Meta-Learning  #Adaptation 
