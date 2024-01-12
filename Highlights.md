@@ -2,12 +2,70 @@
 ![[highlights.pdf]]
 
 
-#### Paper Number 97
+#### Paper Number 100
 #### Title 
-
 #### One-liner summary
 #### Summary
 
+
+#### Paper Number 99
+#### Optimistic Active Exploration of Dynamical Systems #Year-2023 #Exploration #RL/ModelBased 
+Very theoretical didn't get to the end
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/e66d55565f6cd6336f92be01b4efc7e6a1eb2381)
+
+#### One-liner summary
+*"OPAX uses well-calibrated probabilistic models to quantify the epistemic uncertainty about the unknown dynamics. It optimistically—w.r.t. to plausible dynamics—maximizes the information gain between the unknown dynamics and state observations."*
+
+-> To this end, the key question we investigate in this work is: ==how should we interact with the system to learn its dynamics efficiently?==
+-> GPs and Bayesian Neural Networks used as Dynamics models
+#### Summary
+1) #Citable Why exploration is important in MBRL
+	1) *"excel in efficiently exploring the dynamical system as they direct the exploration in regions with high rewards. However, due to the directional bias, their underlying learned dynamics model fails to generalize in other areas of the state-action space. While this is sufficient if only one control task is considered, it does not scale to the setting where the system is used to perform several tasks, i.e., under the same dynamics optimized for different reward functions. As a result, when presented with a new reward function, they often need to relearn a policy from scratch, requiring many interactions with the system, or employ multi-task (Zhang and Yang, 2021) or transfer learning (Weiss et al., 2016) methods"*
+2) #Method The general method 
+	1) *"During each  episode, OPAX plans an exploration policy to gather the most information possible about the system. It learns a statistical dynamics model that can quantify its epistemic uncertainty and utilizes this uncertainty for planning."*
+3) #Method Using mutual information to pick policy
+	1) *"greedily pick a policy that maximizes the information gain conditioned on the previous observations at each episode"*
+
+
+#### Paper Number 98
+#### Robot Learning with Sensorimotor Pre-training #Year-2023 #Transformer  
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/2b806bc0a075f9088021f7362ffa5b8b86fd75ab)
+#### One-liner summary
+*"Our model, called RPT, is a Transformer that operates on sequences of sensorimotor tokens. Given a sequence of camera images, proprioceptive robot states, and actions, we encode the sequence into tokens, mask out a subset, and train a model to predict the missing content from the rest. We hypothesize that if a robot can predict the masked-out content it will have acquired a good model of the physical world that can enable it to act."*
+
+==-> Building a foundation model for robotics basically==
+#### Summary
+1) #Method Images first made into latent features and then tokenized
+	1) *"We encode camera images using a pre-trained vision encoder [8] and use latent visua;l representations for sensorimotor sequence learning."*
+2) #Method Vision Transformer used to encode image inputs
+
+
+
+#### Paper Number 97
+#### 	For active exploration, the epistemic uncertainty can be quantified by measuring the ensemble disagreement via Jensen-R ́enyi Divergence. #Year-2023 #RL/ModelBased #Exploration #ProbabilisticDynamicModels 
+[PDF from Semantic Scholar](https://www.semanticscholar.org/reader/b9e4e17c2653f561c252a21329327fdbc7c74fea)
+
+#### One-liner summary
+
+*"Our framework uses a probabilistic ensemble neural network for dynamics learning, allowing the quantification of epistemic uncertainty via Jensen-Renyi Divergence. The two opposing tasks of exploration and deployment are optimized through state-of-the-art sampling-based MPC, resulting in efficient collection of training data and successful avoidance of uncertain state-action spaces"*
+
+==-> Jensen-Renyi Divergence used to measure ensemble model diagreement and thus measure the epistemic uncertainty of the model.==
+
+==-> SMPPI (Smooth - MPPI) used to reduce chattering in resulting commands==
+#### Summary
+1) #Citable Its important to explore while training these NN models
+	1) *"Active exploration, in which a robot directs itself to states that yield the highest information gain, is essential for efficient data collection and minimizing human supervision."*
+2) #Citable Again great points for Model-free vs Model based RL
+	1) *"Firstly, sample efficiency is essential since real-world samples are highly expensive in terms of time, labor, and finances [16]. Secondly, humans are primarily more intuitive about how to incorporate prior knowledge into a model compared to a policy or value function [14, 17]. Lastly, models are task-agnostic and may thus be utilized to optimize arbitrary cost functions, whereas the majority of model-free policies are bounded to a specific task."*
+3) #Citable Uncertainty aware deployment and active exploration
+	1) *"A spontaneous solution would be to prevent the robot from entering uncertain state-action spaces to evade unpredictable motions"*
+	2) *"The exact opposite of the above strategy is to deliberately visit unexplored state-action spaces that provide high uncertainty."*
+4) #Method This basically combines uncertainty aware deployment with active exploration
+	1) *"In exploration phase, a parallelized ensemble neural network serves as the robot dynamics and outputs the estimated posterior distribution of the next state. In deployment phase, the neural network dynamics trained during the active exploration phase is applied directly to perform uncertainty aware control. Both tasks are optimized using the state-of-the-art sampling-based Model Predictive Contorl (MPC), which, owing to its property, allows the insertion of arbitrary cost functions after training"*
+5) #Citable Ensemble of NN's can capture both Aleotric and Epistemic uncertainty
+6) #Method VERY GOOD explanation of Ensemble NNs in #Details page 3
+7) #Method Jensen-Renyi Divergence used to measure ensemble model diagreement and thus measure the epistemic uncertainty of the model.
+	1) *"For active exploration, the epistemic uncertainty can be quantified by measuring the ensemble disagreement via Jensen-R ́enyi Divergence."*
 
 #### Paper Number 96
 #### FastRLAP: A System for Learning High-Speed Driving via Deep RL and Autonomous Practicing #Year-2023 #RL #OfflineLearning 
