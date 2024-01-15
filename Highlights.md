@@ -2,10 +2,137 @@
 ![[highlights.pdf]]
 
 
-#### Paper Number 100
-#### Title 
+#### Paper Number 105
+#### GranularGym: High Performance Simulation for Robotic Tasks with Granular Materials #Year-2023 #GranularSimulation
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/bc574ac79afbee7745f949a040910e230d6e0bf1)
+
 #### One-liner summary
+Smashing Granular dynamics simulator with example use of RL
 #### Summary
+1) #Citable Why fast approx tools are useful
+	1) *"Nevertheless, we believe that fast, approximate simulation in complex domains is a powerful tool for the development of robotic autonomy, particularly in closed-loop robotic systems where modeling errors may be accounted for and corrected based on sensor observations."*
+2) #Citable Lagrangian particle state representation not good for differentiability
+	1) *"The Lagrangian particle state representation is not amenable to useful direct differentiation, due to its permutation invariance. A carefully chosen state representation could pave a path toward meaningful differentiability."*
+
+
+#### Paper Number 104
+#### Learning Terrain-Aware Kinodynamic Model for Autonomous Off-Road Rally Driving With Model Predictive Path Integral Control #Year-2023 #Off-road #MPC
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/37dc6198a18b76b33501ae9819c497a638826cc4)
+#### One-liner summary
+*"The proposed model generates reliable predictions of 6-degree-of-freedom motion and can even estimate contact interactions without requiring ground truth force data during training. This enables the design of a safe and robust model predictive controller through appropriate cost function design which penalizes sampled trajectories with unstable motion, unsafe interactions, and high levels of uncertainty derived from the model."*
+#### Summary
+1) #Method Key ideas
+	1) **Elevation encoder** that extracts features from a local elevation map $h_t = E_{enc}(M_t)$ where $M_t$ is the local elevation map
+	2) Ensemble of **Dynamics Predictive Neural Network** that takes $h_t$ along with linear and angular velocities and angular orientation of the vehicle to predict the change in these. 
+	3) This change is then converted to global frame (where it is required) and the vehicle states are integrated with the **Explicit Kinematic Layer**
+
+
+#### Paper Number 103
+#### TerrainNet: Visual Modeling of Complex Terrain for High-speed, Off-road Navigation #Year-2023 #Off-road
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/33fd1bc0a4cd1af507480798e354454e854ce8a2)
+#### One-liner summary
+*"To this end, we present TerrainNet, a vision-based terrain perception system for semantic and geometric terrain prediction for aggressive, off-road navigation. The approach relies on several key insights and practical considerations for achieving reliable terrain modeling. The network includes a multi-headed output representation to capture fine- and coarse-grained terrain features necessary for estimating traversability. Accurate depth estimation is achieved using self-supervised depth completion with multi-view RGB and stereo inputs. Requirements for real-time performance and fast inference speeds are met using efficient, learned image feature projections. Furthermore, the model is trained on a large scale, real-world off-road dataset collected across a variety of diverse outdoor environments."*
+
+==-> From 4 RGBD images they create a image processing pipeline that generates terrain semantic and elevation maps that is then used in planning==
+==-> For planning, they use a kinematic bicycle model and evaluate costs of going through the terrain map based on how much it rolls and pitches (the roll and pitch is just by calculating the height at the wheels lol)==
+#### Summary
+1) #Method Key facts
+	1) TerrainNet takes as input multi-view RGB camera info and Optional Stereo camera inputs
+	2) Predicted depth trained using supervised learning. Ground truth depth images from a complete map of the environment using lidar scans
+	3) It is 5X faster for reasons I don't understand (something to do with image processing)
+2) #Method and #Citable is that terrain traversibility is dependent on mainly 3 factors
+	1) Semantics - rocks vs bush
+	2) Geometry - Elevation heights
+	3) Robot capability - Some robots are more powerful and can climb greater heights
+3) #Method They use a multi layer terrain representation that has 
+	1) Ground Layer - Stores semantics and elevation statistics at each cell
+	2) Ceiling Layer - Models overhanging objects such as canopies and tree branches
+4) #Details The images and how they are transformed to give the right maps is shown in page 5 - might be useful for Dan presentation
+
+
+
+#### Paper Number 102
+#### EVORA: Deep Evidential Traversability Learning for Risk-Aware Off-Road Autonomy #Year-2023 #Adaptive-MPC #Off-road 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/1dffbee25c6ad3713c091497f7e381b16db7f2b4)
+#### One-liner summary
+
+*"This work efficiently quantifies both aleatoric and epistemic uncertainties by learning discrete traction distributions and probability densities of the traction predictor’s latent features. Leveraging evidential deep learning, we parameterize Dirichlet distributions with the network outputs and propose a novel uncertainty-aware squared Earth Mover’s distance loss with a closed-form expression that improves learning accuracy and navigation performance"*
+
+==-> For quantifying uncertainty they use "evidential deep learning" to predict distribution of 2 traction parameters which are parameters in their bicycle model==
+==-> Terrain semantics which are input to this traction predictor obtained by training offline using a big dataset==
+
+Towards page 4 it became too technical and I did not read further. Might have to come back and understand this in the future
+
+#### Summary
+1) #Method Both Aleatoric and Epistemic uncertainties handled with brief in #Details page 2 left side column
+2) #Citable The "Related Work" section is really really good here #Details in page 2 Right side column
+3) #Method For quantifying uncertainty they use "evidential deep learning"
+	1) *"Therefore, we leverage the evidential method proposed in [1] that directly parameterizes the conjugate prior distribution of the target distribution with NN outputs. Specifically, we model the target traction distributions as categorical distributions to capture aleatoric uncertainty, which imply Dirichlet conjugate priors whose concentration parameters, determined by the densities of the traction predictor’s latent features, provide information about epistemic uncertainty"*
+4) #Method Main contributions in #Details Page 3 left column
+5) #Method There dynamcis is a unicycle model/bicycle model that has as parameters the traction
+6) #Method The terrain features they use are
+	1) *"Every terrain feature o ∈ O consists of the terrain elevation measured in meter and the one-hot encoding of the semantic label. While we only consider “dirt” and “vegetation” semantic types in simulation, more fine-grained semantic labels are needed in practice"*
+7) #Method Terrain semantics obtained by training offline using a big dataset
+	1) *"We used PointRend [53] trained on the RUGD off-road navigation dataset [54] with 24 semantic categories to segment RGB images and subsequently projected the semantics onto lidar point clouds."*
+8) #Method For Epistemic uncertainty, they measure the density of the latent features using normalzing flows. #Details in Page 5 end and page 6 start
+
+#### Paper Number 101
+#### Neural Field Dynamics Model for Granular Object Piles Manipulation #Year-2023 #Data-Driven-Dynamics #Adaptive-MPC 
+[PDF on Semantic Scholar](https://www.semanticscholar.org/reader/7e6df7b43a911b8c766aad7ac5c66947ea6f9e41)
+
+#### One-liner summary
+*"To this end, we introduce **Neural Field Dynamics Model (NFD)**, a learning-based dynamics model  
+for granular material manipulation. To account for the complex granular dynamics, we leverage the  
+insight that the interaction between each granular object is dominated by local friction and contact,  
+indicating that each voxel in the scene is only interacting with nearby voxels. To take advantage of  
+such sparsity in the transition model and account for translation equivariance, we develop a transition model based on fully convolutional networks (FCN) that uses a unified density-field-based represen-  
+tation of both objects and actions. By using differentiable rendering to construct the density-field of  
+actions, our model is fully differentiable, allowing it to be integrated with gradient-based trajectory  
+optimization methods for planning in complex scenarios, such as pushing piles around obstacles."*
+
+
+==-> Field based representations are better suited for modelling granular object piles==
+==-> Differentiable rasterizer used to render the pusher pose into a one channel image representing the density field of the pushed in the plane==
+
+#### Summary
+1) #Citable Particles give good priors on physics but there are drawbacks
+	1) *"Alternatively, physics-inspired concepts such as particles lend themselves as strong inductive biases for deep dynamics models. A long line of works approximate a system with a collection of particles and model inter-particle dynamics [3, 4]. However, while conventional particle-based techniques have demonstrated impressive accuracy, their memory and computational costs grow superlinearly with the number of particles [5, 6], posing scalability challenges for their application to granular material manipulations. Moreover, these methods assume that the underlying particles can be tracked, limiting their real-world applicability."*
+2) #Method They argue that field based representations are better for modelling granular object piles
+	1) *"In this work, we argue that field-based representations are better-suited for modeling granular object piles. By representing the space in which the physical system resides as a density field with discrete sampling positions, we can avoid the challenges associated with modeling interacting particles. Moreover, it facilitates prediction and observation input processing directly in pixel space while providing strong inductive bias, including the sparsity of the dynamics resulting from the locality of the contact mechanics as well as the spatial equivariance of the dynamics."*
+3) #Method System state represented by a grid-based density field of granular material. This is how that density field is obtained
+	1) *"Specifically, we capture the density field state s by segmenting an RGB image into a one-channel  occupancy grid after an orthographic projection"*
+4) #Method Did a nice test to show that FCN models provide strong inductive bias towards granular material dynamics represented as density fields. #Details in page 5
+5) #Method Direct sim2real transfer is done here from pyBullet
+6) #Citable Good competing methods shown in #Details Page 6 just above section 4.1
+7) #Details SoftRasterizer used as the [differentiable renderer](https://www.semanticscholar.org/paper/Soft-Rasterizer%3A-A-Differentiable-Renderer-for-3D-Liu-Li/8b751405526c28245eea5e925a6ede034c287bdb)
+8) #Details Shallow version of [UNet ](https://www.semanticscholar.org/paper/U-Net%3A-Convolutional-Networks-for-Biomedical-Image-Ronneberger-Fischer/6364fdaa0a0eccd823a779fcdd489173f938e91a)used as the dynamics model
+
+
+#### Paper Number 100
+#### RoboCraft: Learning to See, Simulate, and Shape Elasto-Plastic Objects with Graph Networks #Year-2022  #GNN #Data-Driven-Dynamics #Adaptive-MPC 
+[PDF on Semantic Scholar here](https://www.semanticscholar.org/reader/35bee2910715971b575f2fd6d4b4874690862bc7)
+#### One-liner summary
+
+*"We propose to tackle these challenges by employing a particle-based representation for elasto-plastic objects in a model-based planning framework. Our system, RoboCraft, only assumes access to raw RGBD visual observations. It transforms the sensing data into particles and learns a particle-based dynamics model using graph neural networks (GNNs) to capture the structure of the underlying system."*
+
+==->would it be possible to model the dynamics and manipulate elasto-plastic objects in the real world solely based on RGBD visual observations, without needing particle-to-particle temporal correspondence?==
+#### Summary
+1) #Citable GNNs seem very good for structure modelling #Details alot of citations on page 1 of this fact
+2) #Citable Problem with GNNs is that they require full state information
+	1) *"However, most of them require full-state information and a particle-based simulator to provide particle-to-particle correspondence between frames. Such strong supervision is difficult to obtain from raw sensory data, limiting their use in real-world applications. Hence, the natural question to ask here is: would it be possible to model the dynamics and manipulate elasto-plastic objects in the real world solely based on RGBD visual observations, without needing particle-to-particle temporal correspondence?"*
+3) #Method This is what they have made and its beautiful
+	1) *"Specifically, our framework consists of (1) a perception module that constructs the particle representation of the object by sampling from the reconstructed object mesh, (2) a dynamics model that models the particle interactions using GNNs, and (3) a planning module that uses model-predictive control (MPC) and solves the trajectory optimization problem using gradients from the learned model"*
+4) #Method 
+	1) First convert RGBD image to point cloud
+	2) Convert that point cloud to a mesh
+	3) Sample particles within the mesh
+	4) Some physics based corrections to this point cloud
+	5) Voxel down sampling to get uniform point distribution and to get reasonable points for the GNN
+5) #Hardware Cameras used
+	1) *"RealSense D415 RGBD cameras are fixed at four locations surrounding the plasticine to capture the RGBD images at 30Hz and 848×480 resolution"*
+6) #Method They use random exploration to collect the data
+7) #Method In terms of trajectory optimization, the best they found was MPC with GD #Details Page 6
+8) #Results Performs better than using an MPM model in the loop - But the GNN here is learning from real world data - On that note it also outperforms itself learnt in sim
 
 
 #### Paper Number 99
