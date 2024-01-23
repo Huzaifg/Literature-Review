@@ -1,6 +1,102 @@
 ### All old literature review is here
 ![[highlights.pdf]]
 
+#### Paper Number 108
+#### Title 
+#### One-liner summary
+#### Summary
+
+#### Paper Number 107
+![[2023WangGranularPileManipulation.pdf]]
+#### Dynamic-Resolution Model Learning for Object Pile Manipulation #GNN #MPC  
+#### One-liner summary
+*"_we investigate how to learn dynamic and_
+
+_adaptive representations at different levels of abstraction to_
+
+_achieve the optimal trade-off between efficiency and effectiveness._
+
+_Specifically, we construct dynamic-resolution particle representations_
+
+_of the environment and learn a unified dynamics model_
+
+_using graph neural networks (GNNs) that allows continuous_
+
+_selection of the abstraction level. During test time, the agent_
+
+_can adaptively determine the optimal resolution at each modelpredictive_
+
+_control (MPC) step._"*
+#### Summary
+1) #Method Overview
+	1) _At each MPC step, the resolution regressor_
+
+_predicts the resolution most effective for control optimization._
+
+_The perception module then samples particles from the RGBD_
+
+_visual observation based on the predicted resolution. The_
+
+_derived particle-based scene representation, together with the_
+
+_robot action, will be the input to the dynamics model to predict_
+
+_the environment’s evolution. The dynamics model can then be_
+
+_used for trajectory optimization to derive the action sequence_
+
+2) #Method Key contributions
+	_We make three core contributions: (1) We introduce a_
+
+_framework that, at each planning step, can make continuous_
+
+_predictions to dynamically determine the scene representation_
+
+_at different abstraction levels. (2) We conduct comprehensive_
+
+_evaluations and suggested that our dynamic scene representation_
+
+_selection performs much better than the fixed-resolution_
+
+_baselines. (3) We develop a unified robotic manipulation_
+
+_system capable of various object pile manipulation tasks, including_
+
+_gathering, sorting, and redistributing into complicated_
+
+_target configurations_
+3) #Missing Need to find where they define the task loss at or how they define it
+
+
+#### Paper Number 106
+![[2023WhitneyParticleSimFromVid.pdf]]
+#### Learning 3D Particle-based Simulators from RGB-D Videos #Data-Driven-Dynamics #GranularSimulation #GNN  
+#### One-liner summary
+*"Here we propose a method for learning simulators directly from observations. Visual Particle Dynamics (VPD) jointly learns a latent particle-based representation of 3D scenes, a neural simulator of the latent particle dynamics, and a renderer that can produce images of the scene from arbitrary views. VPD learns end to end from posed RGB-D videos and does not require access to privileged information."*
+
+==-> Learns simulator directly from video but currently no provisions to provide actions and such==
+#### Summary
+1) #Method Big Contributions
+	1) _VPD supports 3D state editing. Its explicit 3D representation can be edited, simulated, and_
+_re-rendered from novel views._
+
+_• VPD supports multi-material simulation. We demonstrate results for multi-body rigid_
+
+_dynamics and soft-body interactions._
+
+_• VPD outperforms 2D video models in data efficiency. With as few as 16 trajectories, VPD_
+
+_can learn a simulator for a simple dynamic scene._
+
+2) #Method Overall approach
+	1) RGB-D converted to $X_{ij}$ via simple projections. RGB also passed through U-NET to produce pixel wise latent features $Z_{ij}$. Then the latent particles $P = (X_{ij}, Z_{ij})$
+	2) Hierarchial GNN then used to propogate these particles $\hat{P}_{t+1} = GNN(P_t, P_{t-1})$
+3) #Method Important detail about the Graph
+	1) Latent points acorss different time steps connected in a graph structure based on spatial proximity #Details that I don't fully understand in page 4
+	2) Message passing is present in #Details in page 4 is also extreamly interesting
+	3) Finally also look at the renderer and see how that is implmeneted
+4) #Results This supports editing the scene and then computing the dynamics as well
+5) 
 
 #### Paper Number 105
 #### GranularGym: High Performance Simulation for Robotic Tasks with Granular Materials #Year-2023 #GranularSimulation
